@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Candy Tracker</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 12px; background: #fff; color: #222; }
+  button { padding: 4px 8px; cursor: pointer; border: 1px solid #999; background: #f4f4f4; border-radius: 4px; }
+  button.on { background: #e8771a; color: #fff; border-color: #b35500; }
+  input { padding: 4px; }
+  #app { display: flex; gap: 16px; align-items: flex-start; }
+  .col { display: flex; flex-direction: column; gap: 3px; }
+  .col h3 { margin: 0 0 4px; }
+  .row, .item { display: flex; gap: 4px; align-items: center; }
+  .grow { flex: 1; text-align: left; }
+  #times button { text-align: left; }
+  #right { flex: 1; min-width: 300px; }
+  .item { border-bottom: 1px solid #ddd; padding: 4px 0; }
+  .candy { width: 70px; }
+  #submit { margin-top: 8px; font-weight: bold; padding: 8px; }
+  #toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  #table-wrap { overflow-x: auto; margin-top: 16px; }
+  table { border-collapse: collapse; }
+  th, td { border: 1px solid #bbb; padding: 3px 6px; text-align: center; font-size: 13px; white-space: pre-line; }
+  td.pending { background: #fff3c4; }
+  td.NaN { color: #aaa; }
+  td[contenteditable] { background: #eef8ee; }
+</style>
+</head>
+<body>
+<div id="toolbar">
+  <button id="organize">Organize table</button>
+  <button id="dl-json">Download JSON</button>
+  <button id="import">Import JSON</button>
+  <input type="file" id="import-file" accept=".json,application/json" hidden>
+  <button id="dl-csv">Download table CSV</button>
+  <button id="link">Link save file</button>
+</div>
+
+<div id="app">
+  <div class="col">
+    <h3>Date</h3>
+    <input id="date" placeholder="Oct 3">
+    <h3 style="margin-top:8px">Event</h3>
+    <input id="event" placeholder="Chef">
+  </div>
+  <div class="col">
+    <h3>Time</h3>
+    <div class="col" id="times"></div>
+  </div>
+  <div class="col">
+    <h3>Player</h3>
+    <div class="col" id="players"></div>
+    <div class="row" style="margin-top:6px">
+      <input id="new-player" placeholder="new player" size="10">
+      <button id="add-player">+ add</button>
+    </div>
+    <button id="submit">SUBMIT</button>
+  </div>
+  <div class="col" id="right">
+    <h3>Queue (<span id="queue-count">0</span>)</h3>
+    <div id="queue"></div>
+    <h3 style="margin-top:16px">Comments</h3>
+    <div class="row">
+      <textarea id="note-text" class="grow" rows="2" placeholder="Special circumstance (saved with selected date/time/event/player)"></textarea>
+      <button id="add-note">Add comment</button>
+    </div>
+    <div id="notes"></div>
+  </div>
+</div>
+
+<div id="table-wrap" hidden>
+  <h3>By player</h3>
+  <table id="table"></table>
+  <h3>By event</h3>
+  <table id="table2"></table>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

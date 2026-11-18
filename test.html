@@ -1,0 +1,31 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Candy Tracker tests</title>
+<pre id="out"></pre>
+<script src="app.js"></script>
+<script>
+  const s = {
+    players: ['A', 'B', 'C'],
+    records: [
+      { id: 1, date: 'Oct 3', time: 0, event: 'Chef', player: 'A', candy: 0 },
+      { id: 2, date: 'Oct 3', time: 20, event: 'Chef', player: 'A', candy: 1 },
+    ],
+    queue: [{ id: 3, date: 'Oct 3', time: 20, event: 'Chef', player: 'B', candy: null }],
+  };
+  const { slots, rows } = buildTable(s);
+  console.assert(slots.length === 2, 'two slots');
+  console.assert(rows[0].cells[0].value === 0 && rows[0].cells[0].recordId === 1, 'A confirmed 0');
+  console.assert(rows[0].cells[1].value === 1, 'A confirmed 1');
+  console.assert(rows[1].cells[0].value === 'NaN', 'B missing');
+  console.assert(rows[1].cells[1].value === 'pending', 'B pending');
+  console.assert(rows[2].cells.every((c) => c.value === 'NaN'), 'C all NaN');
+  console.assert(timeLabel(-1) === 'Special' && timeLabel(0) === '12:00AM' && timeLabel(12) === '12:00PM' && timeLabel(23) === '11:00PM', 'time labels');
+  const late = buildTable({ players: ['A'], queue: [], records: [
+    { id: 4, date: 'Oct 4', time: 0, event: 'Chef', player: 'A', candy: 2 },
+    { id: 5, date: 'Oct 3', time: 20, event: 'Chef', player: 'A', candy: 1 },
+    { id: 6, date: 'Oct 3', time: -1, event: 'Special', player: 'A', candy: 5 },
+    { id: 7, date: 'October 10', time: 0, event: 'Chef', player: 'A', candy: 0 },
+  ] });
+  console.assert(late.slots.map((x) => x.date + ' ' + x.time).join() === 'Oct 3 -1,Oct 3 20,Oct 4 0,October 10 0', 'sorted by date then time');
+  document.getElementById('out').textContent = 'Ran. Check console: no "Assertion failed" = pass.';
+</script>
